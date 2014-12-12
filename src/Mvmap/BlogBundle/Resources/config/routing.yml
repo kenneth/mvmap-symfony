@@ -1,3 +1,9 @@
 mvmap_blog_homepage:
     path:     /hello/{name}
     defaults: { _controller: MvmapBlogBundle:Default:index }
+mvmap_blog_test:
+    path:     /blog/test/{name}
+    defaults: { _controller: MvmapBlogBundle:Default:test }
+mvmap_blog_hello:
+    path:     /blog/hello
+    defaults: { _controller: MvmapBlogBundle:Default:hello }
