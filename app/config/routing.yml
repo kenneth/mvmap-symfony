@@ -1,3 +1,11 @@
+mvmap_user:
+    resource: "@MvmapUserBundle/Resources/config/routing.yml"
+    prefix:   /
+
+mvmap_blog:
+    resource: "@MvmapBlogBundle/Resources/config/routing.yml"
+    prefix:   /
+
 app:
     resource: @AppBundle/Controller/
     type:     annotation
