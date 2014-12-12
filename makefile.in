@@ -1,0 +1,52 @@
+CHECK=\033[32m✔\033[39m
+DONE="$(CHECK) Done.\n"
+php := $(shell which php)
+folders = app/cache app/logs app/spool
+
+comp = composer.phar
+composer = $(shell which $(comp))
+ifeq (,$(findstring $(comp), $(composer)))
+composer = $(comp)
+endif
+
+ifneq (,$(findstring Darwin, $(shell uname -v)))
+echo = printf
+endif
+echo ?= echo -n
+
+.PHONY: all clean test assets init
+.IGNORE: all
+
+all: | $(composer)
+	@$(php) $(composer) self-update
+	@COMPOSER_PROCESS_TIMEOUT=6000 $(php) $(composer) update --prefer-dist -o
+
+init:
+	@$(php) app/check.php | grep ERROR || true
+
+$(folders):
+	@mkdir $@
+
+$(composer):
+	@$(echo) "Downloading $(composer) ... "
+	@curl -sk http://getcomposer.org/installer | $(php) > /dev/null 2>&1
+	@echo $(DONE)
+
+assets:
+	@$(php) app/console assets:install --symlink --env=dev
+	@$(php) app/console assetic:dump --env=dev
+
+test:
+	phpunit -c app
+
+clean: priority
+	$(php) app/console cache:clear --env=dev
+	$(MAKE) priority
+#$(php) app/console cache:warmup --env=dev
+
+priority: $(folders)
+	@sudo chown -R $(shell whoami):root $(folders)
+	@sudo chmod -R g+w $(folders)
+
+start:
+	$(php) app/console server:run 0.0.0.0:5555
