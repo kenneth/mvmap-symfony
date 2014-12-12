@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new AppBundle\AppBundle(),
             new Mvmap\BlogBundle\MvmapBlogBundle(),
             new Mvmap\UserBundle\MvmapUserBundle(),
+            new Mvmap\AdminBundle\MvmapAdminBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

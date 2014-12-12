@@ -1,3 +1,8 @@
+mvmap_admin:
+    resource: "@MvmapAdminBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 mvmap_user:
     resource: "@MvmapUserBundle/Resources/config/routing.yml"
     prefix:   /
